@@ -796,7 +796,9 @@
             const prEfetivo = prBase * (1 - perdaSujeira);
             
             // Se o usuário não ajustou manualmente a potência, calcular automaticamente
-            const autoCalculate = !document.getElementById('potencia').dataset.userEdited;
+            const potenciaInput = document.getElementById('potencia');
+            const userEdited = potenciaInput && potenciaInput.dataset.userEdited === "true";
+            const autoCalculate = !userEdited;
             
             if (autoCalculate || kWp < 1) {
                 // kWh necessário = consumo * cobertura
@@ -979,7 +981,11 @@
 
         function resetToAuto() {
             const potenciaInput = document.getElementById('potencia');
-            if (potenciaInput) potenciaInput.dataset.userEdited = "false";
+            if (potenciaInput) {
+                potenciaInput.dataset.userEdited = "false";
+                // Clear the input to force recalculation
+                potenciaInput.value = "";
+            }
             updateCalculations(true);
         }
 
